@@ -159,7 +159,6 @@ func (r *retentionAPI) CreateRetention(ctx context.Context, params operation.Cre
 	case policy.ScopeLevelProject:
 		if p.Scope.Reference <= 0 {
 			return r.SendError(ctx, errors.BadRequestError(fmt.Errorf("invalid Project id %d", p.Scope.Reference)))
-
 		}
 
 		if _, err := r.projectCtl.Get(ctx, p.Scope.Reference); err != nil {
@@ -176,7 +175,7 @@ func (r *retentionAPI) CreateRetention(ctx context.Context, params operation.Cre
 	if err != nil {
 		return r.SendError(ctx, err)
 	}
-	if old != nil && len(old) > 0 {
+	if len(old) > 0 {
 		return r.SendError(ctx, errors.BadRequestError(fmt.Errorf("project %v already has retention policy %v", p.Scope.Reference, old["retention_id"])))
 	}
 

@@ -4,13 +4,13 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/goharbor/harbor/src/lib/config"
 	"os"
 	"strings"
 
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/goharbor/harbor/src/common/rbac"
 	"github.com/goharbor/harbor/src/controller/gc"
+	"github.com/goharbor/harbor/src/lib/config"
 	"github.com/goharbor/harbor/src/lib/errors"
 	"github.com/goharbor/harbor/src/lib/q"
 	"github.com/goharbor/harbor/src/pkg/task"
@@ -231,4 +231,16 @@ func (g *gcAPI) GetGCLog(ctx context.Context, params operation.GetGCLogParams) m
 		return g.SendError(ctx, err)
 	}
 	return operation.NewGetGCLogOK().WithPayload(string(log))
+}
+
+func (g *gcAPI) StopGC(ctx context.Context, params operation.StopGCParams) middleware.Responder {
+	if err := g.RequireSystemAccess(ctx, rbac.ActionStop, rbac.ResourceGarbageCollection); err != nil {
+		return g.SendError(ctx, err)
+	}
+
+	if err := g.gcCtr.Stop(ctx, params.GCID); err != nil {
+		return g.SendError(ctx, err)
+	}
+
+	return operation.NewStopGCOK()
 }

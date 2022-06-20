@@ -187,6 +187,8 @@ const (
 	TraceOtelInsecure    = "trace_otel_insecure"
 	TraceOtelTimeout     = "trace_otel_timeout"
 
+	GDPRDeleteUser = "gdpr_delete_user"
+
 	//  These variables are temporary solution for issue: https://github.com/goharbor/harbor/issues/16039
 	//  When user disable the pull count/time/audit log, it will decrease the database access, especially in large concurrency pull scenarios.
 	// TODO: Once we have a complete solution, delete these variables.
@@ -209,4 +211,8 @@ const (
 	PurgeAuditIncludeOperations = "include_operations"
 	PurgeAuditDryRun            = "dry_run"
 	PurgeAuditRetentionHour     = "audit_retention_hour"
+	// AuditLogForwardEndpoint indicate to forward the audit log to an endpoint
+	AuditLogForwardEndpoint = "audit_log_forward_endpoint"
+	// SkipAuditLogDatabase skip to log audit log in database
+	SkipAuditLogDatabase = "skip_audit_log_database"
 )

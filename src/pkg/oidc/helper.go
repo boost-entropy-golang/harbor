@@ -55,7 +55,7 @@ type providerHelper struct {
 
 func (p *providerHelper) get() (*gooidc.Provider, error) {
 	if p.instance.Load() != nil {
-		if time.Now().Sub(p.creationTime) > 3*time.Second {
+		if time.Since(p.creationTime) > 3*time.Second {
 			if err := p.create(); err != nil {
 				return nil, err
 			}
@@ -438,7 +438,6 @@ type Conn struct {
 // TestEndpoint tests whether the endpoint is a valid OIDC endpoint.
 // The nil return value indicates the success of the test
 func TestEndpoint(conn Conn) error {
-
 	// gooidc will try to call the discovery api when creating the provider and that's all we need to check
 	ctx := clientCtx(context.Background(), conn.VerifyCert)
 	_, err := gooidc.NewProvider(ctx, conn.URL)

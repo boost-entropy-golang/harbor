@@ -191,6 +191,16 @@ func OIDCSetting(ctx context.Context) (*cfgModels.OIDCSetting, error) {
 	}, nil
 }
 
+// GDPRSetting returns the setting of GDPR
+func GDPRSetting(ctx context.Context) (*cfgModels.GDPRSetting, error) {
+	if err := DefaultMgr().Load(ctx); err != nil {
+		return nil, err
+	}
+	return &cfgModels.GDPRSetting{
+		DeleteUser: DefaultMgr().Get(ctx, common.GDPRDeleteUser).GetBool(),
+	}, nil
+}
+
 // NotificationEnable returns a bool to indicates if notification enabled in harbor
 func NotificationEnable(ctx context.Context) bool {
 	return DefaultMgr().Get(ctx, common.NotificationEnable).GetBool()
@@ -240,4 +250,14 @@ func PullTimeUpdateDisable(ctx context.Context) bool {
 // PullAuditLogDisable returns a bool to indicate if pull audit log is disable for pull request.
 func PullAuditLogDisable(ctx context.Context) bool {
 	return DefaultMgr().Get(ctx, common.PullAuditLogDisable).GetBool()
+}
+
+// AuditLogForwardEndpoint returns the audit log forward endpoint
+func AuditLogForwardEndpoint(ctx context.Context) string {
+	return DefaultMgr().Get(ctx, common.AuditLogForwardEndpoint).GetString()
+}
+
+// SkipAuditLogDatabase returns the audit log forward endpoint
+func SkipAuditLogDatabase(ctx context.Context) bool {
+	return DefaultMgr().Get(ctx, common.SkipAuditLogDatabase).GetBool()
 }
